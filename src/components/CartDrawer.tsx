@@ -2,12 +2,15 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/co
 import { Button } from "@/components/ui/button";
 import { ShoppingCart, Plus, Minus, Trash2 } from "lucide-react";
 import { useCart } from "@/context/CartContext";
+import { Link } from "react-router-dom";
+import { useState } from "react";
 
 export const CartDrawer = () => {
   const { items, totalItems, totalPrice, updateQuantity, removeFromCart } = useCart();
+  const [open, setOpen] = useState(false);
 
   return (
-    <Sheet>
+    <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
         <Button variant="outline" size="icon" className="relative rounded-xl">
           <ShoppingCart className="h-5 w-5" />
@@ -80,8 +83,13 @@ export const CartDrawer = () => {
                   <span>Total</span>
                   <span>${totalPrice.toFixed(2)}</span>
                 </div>
-                <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl py-3">
-                  Proceed to Checkout
+                <Button 
+                  asChild
+                  className="w-full bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl py-3"
+                >
+                  <Link to="/get-quote" onClick={() => setOpen(false)}>
+                    Request Quote for Items
+                  </Link>
                 </Button>
               </div>
             </>
