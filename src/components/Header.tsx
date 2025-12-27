@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { CartDrawer } from "./CartDrawer";
 
 export const Header = () => {
   return (
@@ -23,9 +24,12 @@ export const Header = () => {
               Contact
             </a>
           </nav>
-          <Button className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg">
-            Get Quote
-          </Button>
+          <div className="flex items-center gap-3">
+            <CartDrawer />
+            <Button asChild className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg">
+              <Link to="/get-quote">Get Quote</Link>
+            </Button>
+          </div>
         </div>
       </div>
     </header>
