@@ -53,7 +53,7 @@ const handler = async (req: Request): Promise<Response> => {
     // Send notification email to sales team
     const salesEmail = await resend.emails.send({
       from: "SockCo <onboarding@resend.dev>",
-      to: ["sales@sockco.com"], // Replace with actual sales email
+      to: ["shuhaibrizvi@gmail.com"],
       subject: `New Inquiry from ${companyName}`,
       html: `
         <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto;">
