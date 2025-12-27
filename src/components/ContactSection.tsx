@@ -1,7 +1,51 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 export const ContactSection = () => {
+  const { toast } = useToast();
+  const [isLoading, setIsLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    companyName: "",
+    email: "",
+    orderQuantity: "500-1,000 pairs",
+  });
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    try {
+      const { data, error } = await supabase.functions.invoke("send-inquiry", {
+        body: formData,
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Inquiry Sent!",
+        description: "We'll get back to you within 24 hours.",
+      });
+
+      setFormData({
+        companyName: "",
+        email: "",
+        orderQuantity: "500-1,000 pairs",
+      });
+    } catch (error: any) {
+      console.error("Error sending inquiry:", error);
+      toast({
+        title: "Error",
+        description: "Failed to send inquiry. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <section id="contact" className="py-20 px-6">
       <div className="container mx-auto max-w-4xl">
@@ -17,36 +61,50 @@ export const ContactSection = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <Card className="p-8 bg-card border border-border rounded-xl shadow-soft">
             <h3 className="text-2xl font-semibold text-foreground mb-6">Get a Quote</h3>
-            <div className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-foreground mb-2">Company Name</label>
                 <input 
                   type="text" 
+                  value={formData.companyName}
+                  onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
                   className="w-full p-3 border border-border rounded-lg bg-background focus:ring-2 focus:ring-ring focus:border-transparent outline-none"
                   placeholder="Your company name"
+                  required
                 />
               </div>
               <div>
                 <label className="block text-sm font-medium text-foreground mb-2">Email</label>
                 <input 
                   type="email" 
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   className="w-full p-3 border border-border rounded-lg bg-background focus:ring-2 focus:ring-ring focus:border-transparent outline-none"
                   placeholder="your@email.com"
+                  required
                 />
               </div>
               <div>
                 <label className="block text-sm font-medium text-foreground mb-2">Order Quantity</label>
-                <select className="w-full p-3 border border-border rounded-lg bg-background focus:ring-2 focus:ring-ring focus:border-transparent outline-none">
+                <select 
+                  value={formData.orderQuantity}
+                  onChange={(e) => setFormData({ ...formData, orderQuantity: e.target.value })}
+                  className="w-full p-3 border border-border rounded-lg bg-background focus:ring-2 focus:ring-ring focus:border-transparent outline-none"
+                >
                   <option>500-1,000 pairs</option>
                   <option>1,000-5,000 pairs</option>
                   <option>5,000-10,000 pairs</option>
                   <option>10,000+ pairs</option>
                 </select>
               </div>
-              <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg py-3">
-                Send Inquiry
+              <Button 
+                type="submit"
+                disabled={isLoading}
+                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg py-3"
+              >
+                {isLoading ? "Sending..." : "Send Inquiry"}
               </Button>
-            </div>
+            </form>
           </Card>
           
           <Card className="p-8 bg-muted/50 border border-border rounded-xl">
