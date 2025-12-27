@@ -19,11 +19,12 @@ export const Hero = () => {
             <Link to="/products">View Catalog</Link>
           </Button>
           <Button 
+            asChild
             variant="outline" 
             size="lg" 
             className="border-2 border-border hover:bg-accent rounded-xl px-8 py-4 text-lg"
           >
-            Request Samples
+            <Link to="/get-quote">Request Samples</Link>
           </Button>
         </div>
         <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
