@@ -6,30 +6,38 @@ import sockWhiteNoshow from "@/assets/sock-white-noshow.jpg";
 
 const products = [
   {
+    id: "sock-crew-white",
     name: "Premium Cotton Crew",
     image: sockWhiteCrew,
-    price: "$2.50",
+    price: 2.50,
+    priceDisplay: "$2.50",
     minOrder: "500 pairs",
     description: "Classic crew socks made from 100% premium cotton. Perfect for everyday wear with superior comfort."
   },
   {
+    id: "sock-ankle-black",
     name: "Athletic Ankle Socks",
     image: sockBlackAnkle,
-    price: "$2.25",
+    price: 2.25,
+    priceDisplay: "$2.25",
     minOrder: "500 pairs", 
     description: "Performance ankle socks designed for active lifestyles. Moisture-wicking with reinforced heel and toe."
   },
   {
+    id: "sock-sport-gray",
     name: "Sport Performance",
     image: sockGraySport,
-    price: "$2.75",
+    price: 2.75,
+    priceDisplay: "$2.75",
     minOrder: "500 pairs",
     description: "Advanced sport socks with cushioned sole and arch support. Ideal for athletic and outdoor activities."
   },
   {
+    id: "sock-noshow-white",
     name: "No-Show Essentials",
     image: sockWhiteNoshow,
-    price: "$2.00",
+    price: 2.00,
+    priceDisplay: "$2.00",
     minOrder: "500 pairs",
     description: "Invisible no-show socks that stay hidden in shoes. Lightweight design with non-slip heel grip."
   }
