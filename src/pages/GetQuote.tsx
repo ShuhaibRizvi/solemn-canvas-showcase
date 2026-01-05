@@ -6,11 +6,13 @@ import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useCart } from "@/context/CartContext";
-import { Trash2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { Trash2, Loader2 } from "lucide-react";
 
 const GetQuote = () => {
   const { toast } = useToast();
   const { items, totalItems, totalPrice, removeFromCart, clearCart } = useCart();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     companyName: "",
     contactName: "",
@@ -20,21 +22,46 @@ const GetQuote = () => {
     message: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast({
-      title: "Quote Request Submitted",
-      description: "We'll get back to you within 24 hours.",
-    });
-    setFormData({
-      companyName: "",
-      contactName: "",
-      email: "",
-      phone: "",
-      quantity: "",
-      message: "",
-    });
-    clearCart();
+    
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+
+    try {
+      const { error } = await supabase.functions.invoke("send-inquiry", {
+        body: {
+          companyName: formData.companyName,
+          email: formData.email,
+          orderQuantity: formData.quantity,
+        },
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Quote Request Submitted",
+        description: "We'll get back to you within 24 hours.",
+      });
+      setFormData({
+        companyName: "",
+        contactName: "",
+        email: "",
+        phone: "",
+        quantity: "",
+        message: "",
+      });
+      clearCart();
+    } catch (error: any) {
+      console.error("Failed to submit quote:", error);
+      toast({
+        title: "Submission Failed",
+        description: error.message || "Failed to submit quote. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -194,9 +221,17 @@ const GetQuote = () => {
                 <Button
                   type="submit"
                   size="lg"
+                  disabled={isSubmitting}
                   className="w-full bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl py-4 text-lg"
                 >
-                  Submit Quote Request
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                      Submitting...
+                    </>
+                  ) : (
+                    "Submit Quote Request"
+                  )}
                 </Button>
               </form>
             </div>
