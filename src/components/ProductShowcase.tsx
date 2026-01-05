@@ -2,6 +2,7 @@ import { ProductCard } from "./ProductCard";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 import sockWhiteCrew from "@/assets/sock-white-crew.jpg";
 import sockBlackAnkle from "@/assets/sock-black-ankle.jpg";
 import sockGraySport from "@/assets/sock-gray-sport.jpg";
@@ -149,8 +150,8 @@ export const ProductShowcase = () => {
           <p className="text-muted-foreground mb-6">
             Need custom colors, sizes, or branding? We offer full customization services.
           </p>
-          <Button className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3 rounded-xl font-medium">
-            Discuss Custom Orders
+          <Button asChild className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3 rounded-xl font-medium">
+            <Link to="/custom-orders">Discuss Custom Orders</Link>
           </Button>
         </div>
       </div>
