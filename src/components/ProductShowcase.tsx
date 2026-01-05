@@ -22,6 +22,11 @@ const categoryImages: Record<string, string> = {
   ankle: sockBlackAnkle,
   sport: sockGraySport,
   "no-show": sockWhiteNoshow,
+  athletic: sockGraySport,
+  dress: sockBlackAnkle,
+  compression: sockWhiteCrew,
+  thermal: sockGraySport,
+  bamboo: sockWhiteNoshow,
 };
 
 const categories = [
@@ -30,6 +35,11 @@ const categories = [
   { id: "ankle", name: "Ankle Socks" },
   { id: "no-show", name: "No-Show Socks" },
   { id: "sport", name: "Sport Socks" },
+  { id: "athletic", name: "Athletic Socks" },
+  { id: "dress", name: "Dress Socks" },
+  { id: "compression", name: "Compression Socks" },
+  { id: "thermal", name: "Thermal Socks" },
+  { id: "bamboo", name: "Bamboo Socks" },
 ];
 
 export const ProductShowcase = () => {
