@@ -91,7 +91,17 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
 
-    const { companyName, email, orderQuantity } = validationResult.data;
+    const { companyName, email, orderQuantity, website } = validationResult.data;
+
+    // Honeypot check - if filled, it's a bot
+    if (website && website.length > 0) {
+      console.log("Honeypot triggered, rejecting submission");
+      // Return success to not reveal detection
+      return new Response(JSON.stringify({ success: true }), {
+        status: 200,
+        headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
+    }
     
     // Escape HTML for safe email content
     const safeCompanyName = escapeHtml(companyName);
