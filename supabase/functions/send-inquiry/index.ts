@@ -14,6 +14,7 @@ const InquirySchema = z.object({
   companyName: z.string().trim().min(1, "Company name is required").max(100, "Company name too long"),
   email: z.string().trim().email("Invalid email address").max(255, "Email too long"),
   orderQuantity: z.string().trim().min(1, "Order quantity is required").max(50, "Order quantity too long"),
+  website: z.string().max(0, "Invalid submission").optional().default(""),
 });
 
 // HTML escape function to prevent injection
