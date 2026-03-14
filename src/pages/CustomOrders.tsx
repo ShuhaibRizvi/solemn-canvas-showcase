@@ -91,6 +91,7 @@ const CustomOrders = () => {
           companyName: formData.companyName,
           email: formData.email,
           orderQuantity: formData.quantity,
+          website: "",
           isCustomOrder: true,
           customOrderDetails: {
             sockType: formData.sockType,
