@@ -14,6 +14,7 @@ const InquirySchema = z.object({
   companyName: z.string().trim().min(1, "Company name is required").max(100, "Company name too long"),
   email: z.string().trim().email("Invalid email address").max(255, "Email too long"),
   orderQuantity: z.string().trim().min(1, "Order quantity is required").max(50, "Order quantity too long"),
+  website: z.string().max(0, "Invalid submission").optional().default(""),
 });
 
 // HTML escape function to prevent injection
@@ -90,7 +91,17 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
 
-    const { companyName, email, orderQuantity } = validationResult.data;
+    const { companyName, email, orderQuantity, website } = validationResult.data;
+
+    // Honeypot check - if filled, it's a bot
+    if (website && website.length > 0) {
+      console.log("Honeypot triggered, rejecting submission");
+      // Return success to not reveal detection
+      return new Response(JSON.stringify({ success: true }), {
+        status: 200,
+        headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
+    }
     
     // Escape HTML for safe email content
     const safeCompanyName = escapeHtml(companyName);
